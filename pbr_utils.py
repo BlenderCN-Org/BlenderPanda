@@ -233,14 +233,14 @@ def set_emissive_texture(self, value):
 
 
 class PbrSettings(bpy.types.PropertyGroup):
-    hardness_float = bpy.props.FloatProperty()
+    hardness_float : bpy.props.FloatProperty()
     base_color_text_index = 0
     metal_rough_text_index = 0
     normal_text_index = 0
     occlusion_text_index = 0
     emissive_text_index = 0
 
-    base_color_factor = bpy.props.FloatVectorProperty(
+    base_color_factor : bpy.props.FloatVectorProperty(
         name='Base Color Factor',
         size=4,
         subtype='COLOR',
@@ -249,13 +249,13 @@ class PbrSettings(bpy.types.PropertyGroup):
         get=get_base_color_factor,
         set=set_base_color_factor,
     )
-    base_color_texture = bpy.props.StringProperty(
+    base_color_texture : bpy.props.StringProperty(
         name='Texture',
         get=get_base_color_texture,
         set=set_base_color_texture,
     )
 
-    alpha_mode = bpy.props.EnumProperty(
+    alpha_mode : bpy.props.EnumProperty(
         items=ALPHA_MODE_ITEMS,
         name='Alpha Mode',
         default='OPAQUE',
@@ -263,41 +263,41 @@ class PbrSettings(bpy.types.PropertyGroup):
         set=set_alpha_mode,
     )
 
-    alpha_cutoff = bpy.props.FloatProperty(
+    alpha_cutoff : bpy.props.FloatProperty(
         name='Alpha Cutoff',
         min=0.0,
         max=1.0,
         default=0.5,
     )
 
-    metallic_factor = bpy.props.FloatProperty(
+    metallic_factor : bpy.props.FloatProperty(
         name='Metallic Factor',
         min=0.0,
         max=1.0,
     )
-    roughness_factor = bpy.props.FloatProperty(
+    roughness_factor : bpy.props.FloatProperty(
         name='Roughness Factor',
         min=0.0,
         max=1.0,
         get=get_roughness_factor,
         set=set_roughness_factor,
     )
-    metal_roughness_texture = bpy.props.StringProperty(
+    metal_roughness_texture : bpy.props.StringProperty(
         name='Texture',
         get=get_metal_roughness_texture,
         set=set_metal_roughness_texture,
     )
 
-    normal_texture = bpy.props.StringProperty(
+    normal_texture : bpy.props.StringProperty(
         name='Normal',
         get=get_normal_texture,
         set=set_normal_texture,
     )
-    occlusion_texture = bpy.props.StringProperty(
+    occlusion_texture : bpy.props.StringProperty(
         name='Occlusion',
     )
 
-    emissive_factor = bpy.props.FloatVectorProperty(
+    emissive_factor : bpy.props.FloatVectorProperty(
         name='Emissive Factor',
         size=3,
         subtype='COLOR',
@@ -306,7 +306,7 @@ class PbrSettings(bpy.types.PropertyGroup):
         get=get_emissive_factor,
         set=set_emissive_factor,
     )
-    emissive_texture = bpy.props.StringProperty(
+    emissive_texture : bpy.props.StringProperty(
         name='Texture',
         get=get_emissive_texture,
         set=set_emissive_texture,
@@ -326,20 +326,20 @@ class PbrExportPanel(bpy.types.Panel):
 
     def draw(self, context):
         settings = context.material.pbr_export_settings
-        self.layout.label('Base Color:')
+        self.layout.label(text='Base Color:')
         box = self.layout.box()
         box.prop(settings, 'base_color_factor', text='Factor')
         box.prop_search(settings, 'base_color_texture', bpy.data, 'textures')
         box.prop(settings, 'alpha_mode')
         box.prop(settings, 'alpha_cutoff')
 
-        self.layout.label('Roughness:')
+        self.layout.label(text='Roughness:')
         box = self.layout.box()
         box.prop(settings, 'metallic_factor', text='Metallic')
         box.prop(settings, 'roughness_factor', text='Factor')
         box.prop_search(settings, 'metal_roughness_texture', bpy.data, 'textures')
 
-        self.layout.label('Emissive:')
+        self.layout.label(text='Emissive:')
         box = self.layout.box()
         box.prop(settings, 'emissive_factor', text='Factor')
         box.prop_search(settings, 'emissive_texture', bpy.data, 'textures')
@@ -348,3 +348,13 @@ class PbrExportPanel(bpy.types.Panel):
         self.layout.prop_search(settings, 'occlusion_texture', bpy.data, 'textures')
 
         self.layout.prop(context.material.game_settings, 'use_backface_culling')
+
+
+def register():
+    bpy.utils.register_class(PbrSettings)
+    bpy.utils.register_class(PbrExportPanel)
+
+
+def unregister():
+    bpy.utils.unregister_class(PbrSettings)
+    bpy.utils.unregister_class(PbrExportPanel)

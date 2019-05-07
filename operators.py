@@ -24,17 +24,17 @@ class ExportBam(bpy.types.Operator, ExportHelper):
     bl_idname = 'panda_engine.export_bam'
     bl_label = 'Export BAM'
 
-    # copy_images = bpy.props.BoolProperty(
+    # copy_images : bpy.props.BoolProperty(
     #     default=True,
     # )
 
-    skip_up_to_date = bpy.props.BoolProperty(
+    skip_up_to_date : bpy.props.BoolProperty(
         default=False,
     )
 
     # For ExportHelper
     filename_ext = '.bam'
-    filter_glob = bpy.props.StringProperty(
+    filter_glob : bpy.props.StringProperty(
         default='*.bam',
         options={'HIDDEN'},
     )
@@ -111,15 +111,15 @@ class ExportBam(bpy.types.Operator, ExportHelper):
 
 class CreateProject(bpy.types.Operator):
     """Setup a new project directory"""
-    bl_idname = 'panda_engine.create_project'
+    bl_idname = 'panda_engine.'
     bl_label = 'Create New Project'
 
-    directory = bpy.props.StringProperty(
+    directory : bpy.props.StringProperty(
         name='Project Directory',
         subtype='DIR_PATH',
     )
 
-    switch_dir = bpy.props.BoolProperty(
+    switch_dir : bpy.props.BoolProperty(
         name='Switch to directory',
         default=True,
     )
@@ -169,7 +169,7 @@ class SwitchProject(bpy.types.Operator):
     bl_idname = 'panda_engine.switch_project'
     bl_label = 'Switch Project'
 
-    directory = bpy.props.StringProperty(
+    directory : bpy.props.StringProperty(
         name='Project Directory',
         subtype='DIR_PATH',
     )
@@ -219,10 +219,21 @@ class RunProject(bpy.types.Operator):
 def menu_func_export(self, _context):
     self.layout.operator(ExportBam.bl_idname, text="Panda3D (.bam)")
 
-
+classes = [
+    ExportBam,
+    CreateProject,
+    UpdateProject,
+    SwitchProject,
+    BuildProject,
+    RunProject,
+]
 def register():
-    bpy.types.INFO_MT_file_export.append(menu_func_export)
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
 
 def unregister():
-    bpy.types.INFO_MT_file_export.remove(menu_func_export)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
+    bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)

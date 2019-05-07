@@ -3,6 +3,7 @@ import os
 import bpy
 
 from .pbr_utils import PbrSettings
+from . import pbr_utils
 from . import pman
 from . import operators
 
@@ -248,19 +249,36 @@ def get_panels():
 
     return [getattr(bpy.types, p) for p in panels if hasattr(bpy.types, p)]
 
+classes = [
+    PandaRender_PT_project,
+    PandaRender_PT_build,
+    PandaRender_PT_run,
+    Panda_PT_context_material,
+    PandaMaterial_PT_basic,
+    PandaCamera_PT_lens,
+    PandaPhysics_PT_add,
+]
 
 def register():
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    pbr_utils.register()
     for panel in get_panels():
         panel.COMPAT_ENGINES.add('PANDA')
 
     if not hasattr(bpy.types.Material, 'pbr_export_settings'):
-        bpy.types.Material.pbr_export_settings = bpy.props.PointerProperty(type=PbrSettings)
+        
+        bpy.types.Material.pbr_export_settings = bpy.props.PointerProperty(type=pbr_utils.PbrSettings)
 
 
 def unregister():
+    for cls in classes:
+        bpy.utils.unregister_class(cls)    
+    pbr_utils.unregister()
     for panel in get_panels():
         if 'PANDA' in panel.COMPAT_ENGINES:
             panel.COMPAT_ENGINES.remove('PANDA')
 
     if hasattr(bpy.types.Material, 'pbr_export_settings'):
         del bpy.types.Material.pbr_export_settings
+        

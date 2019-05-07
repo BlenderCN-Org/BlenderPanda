@@ -289,3 +289,9 @@ class PandaEngine(bpy.types.RenderEngine):
         if not bpy.app.background:
             keymap = bpy.context.window_manager.keyconfigs.default.keymaps['Screen']
             keymap.keymap_items.new(LaunchGame.bl_idname, 'P', 'PRESS')
+
+def register():
+    bpy.utils.register_class(PandaEngine)
+
+def unregister():
+    bpy.utils.unregister_class(PandaEngine)
