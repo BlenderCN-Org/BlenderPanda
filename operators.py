@@ -111,7 +111,7 @@ class ExportBam(bpy.types.Operator, ExportHelper):
 
 class CreateProject(bpy.types.Operator):
     """Setup a new project directory"""
-    bl_idname = 'panda_engine.'
+    bl_idname = 'panda_engine.create_project'
     bl_label = 'Create New Project'
 
     directory : bpy.props.StringProperty(
