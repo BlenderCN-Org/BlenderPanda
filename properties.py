@@ -139,7 +139,7 @@ class PandaProjectSettings(bpy.types.PropertyGroup):
         del bpy.types.Scene.panda_project
 
 def register():
-    pass
+    bpy.utils.register_class(PandaProjectSettings)
 
 def unregister():
-    pass
+    bpy.utils.unregister_class(PandaProjectSettings)
