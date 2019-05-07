@@ -2,7 +2,7 @@ bl_info = { # pylint: disable=invalid-name
     "name": "Panda3D Integration",
     "author": "Mitchell Stokes",
     "version": (0, 5, 0),
-    "blender": (2, 79, 0),
+    "blender": (2, 80, 0),
     "location": "Info header, render engine menu",
     "description": "Run Panda3D from inside Blender",
     "wiki_url": "https://github.com/Moguri/BlenderPanda",
@@ -45,7 +45,7 @@ def load_handler(_dummy):
     operators.update_blender_path()
 
 def register():
-    bpy.utils.register_module(__name__)
+    panda_engine.register()
     ui.register()
     operators.register()
     properties.register()
@@ -53,8 +53,8 @@ def register():
 
 
 def unregister():
-    bpy.utils.unregister_module(__name__)
     ui.unregister()
+    panda_engine.unregister()
     operators.unregister()
     properties.unregister()
     if load_handler in bpy.app.handlers.load_post:
